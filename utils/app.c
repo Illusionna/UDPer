@@ -27,8 +27,7 @@ void app_convert(unsigned int value, char *buffer, int size) {
 
 
 void app_progress(int current, int epoch, int step, char *description) {
-    int message = (description != NULL && description[0] != '\0');
-    if (!message && current != 0 && current % step != 0 && current != epoch) return;
+    if (current != 0 && current % step != 0 && current != epoch) return;
     int width = 50;
     // printf("\x1b[?25l");
     float percentage = (epoch > 0) ? (float)current / epoch : 0.0F;
@@ -40,7 +39,7 @@ void app_progress(int current, int epoch, int step, char *description) {
         else printf(" ");
     }
     printf("] %7.2f%% (%d/%d)", percentage * 100, current, epoch);
-    if (message) printf(" \x1b[33m%s\x1b[0m\x1b[K", description);
+    if (description != NULL && description[0] != '\0') printf(" \x1b[33m%s\x1b[0m\x1b[K", description);
     else printf("\x1b[K");
     fflush(stdout);
     if (current >= epoch) printf("\n");
